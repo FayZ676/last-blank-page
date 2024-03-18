@@ -1,31 +1,26 @@
 "use server";
 
-import { clearDatabase } from "./clearDatabase";
 import {
-  insertUser,
   getOnePrompt,
   getRandomPrompt,
-  getUser,
   updateActivePrompt,
+  initializeData,
 } from "./utils";
 
-async function initializeData() {
-  await clearDatabase();
-  await insertUser({ progress: "in_progress", activePrompt: 1 });
-  const user = await getUser();
-  return user;
-}
-
 export async function initializeActivePromptForNewUser() {
-  const user = await initializeData();
+  const user = await initializeData({
+    id: "e3410205-b163-4fca-b624-c616a26990e9",
+    progress: "in_progress",
+    active_prompt: 1,
+  });
   if (!user.active_prompt) {
     if (user.progress == "in_progress") {
       const prompt = await getRandomPrompt();
-      await updateActivePrompt({ prompt_id: prompt.id });
+      await updateActivePrompt(prompt.id);
       return prompt;
     }
     return null;
   }
-  const activePromptData = await getOnePrompt({ id: user.active_prompt });
+  const activePromptData = await getOnePrompt(user.active_prompt);
   return activePromptData;
 }

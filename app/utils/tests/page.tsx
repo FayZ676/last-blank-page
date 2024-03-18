@@ -2,7 +2,7 @@
 
 import React from "react";
 import { initializeActivePromptForNewUser } from "./initializeActivePrompt";
-import { completeAllPrompts } from "./completeAllPrompts";
+import { completeLastPrompt } from "./completePrompts";
 import { clearDatabase } from "./clearDatabase";
 
 export default function TestPage() {
@@ -11,8 +11,8 @@ export default function TestPage() {
     console.log(`NAP: ${JSON.stringify(newActivePrompt)}`);
   }
 
-  async function handleCompleteAllPrompts() {
-    const updatedUserData = await completeAllPrompts();
+  async function handlecompleteLastPrompt() {
+    const updatedUserData = await completeLastPrompt();
     console.log(`UUD: ${JSON.stringify(updatedUserData)}`);
   }
 
@@ -29,10 +29,10 @@ export default function TestPage() {
         Initialize Active Prompt for New User
       </button>
       <button
-        onClick={handleCompleteAllPrompts}
+        onClick={handlecompleteLastPrompt}
         className="border rounded-md p-2 hover:bg-stone-800"
       >
-        Complete all prompts
+        Complete last prompt
       </button>
     </div>
   );

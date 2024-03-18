@@ -57,6 +57,16 @@ export async function deleteUser() {
 }
 
 // PROMPTS_TEST TABLE
+async function insertPrompt(
+  prompt: Database["public"]["Tables"]["prompts_test"]["Row"]
+) {
+  const { data, error } = await supabase
+    .from("prompts_test")
+    .insert(prompt)
+    .select();
+  if (error) throw new Error(`${JSON.stringify(error)}`);
+}
+
 export async function getOnePrompt(
   id: Database["public"]["Tables"]["prompts_test"]["Row"]["id"]
 ) {
@@ -122,12 +132,27 @@ export async function deleteCompletedPrompts() {
 // UTILITIES
 export async function initializeData(
   user: Database["public"]["Tables"]["users_test"]["Row"],
-  completedPrompts?: Database["public"]["Tables"]["completed_prompts_test"]["Row"]
+  completedPrompts?: {
+    completedPrompt: Database["public"]["Tables"]["completed_prompts_test"]["Row"];
+    feedback: string;
+  }[],
+  prompts?: Database["public"]["Tables"]["prompts_test"]["Row"][]
 ) {
   await clearDatabase();
   await insertUser({
     progress: user.progress,
     activePrompt: user.active_prompt,
   });
+  prompts && (await Promise.all(prompts.map((prompt) => insertPrompt(prompt))));
+  completedPrompts &&
+    (await Promise.all(
+      completedPrompts.map((completed) =>
+        insertCompletedPrompt({
+          promptId: completed.completedPrompt.prompt_id,
+          userId: completed.completedPrompt.user_id,
+          feedback: completed.feedback,
+        })
+      )
+    ));
   return user;
 }

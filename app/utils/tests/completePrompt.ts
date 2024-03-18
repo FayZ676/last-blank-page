@@ -13,7 +13,10 @@ import {
 async function completePrompt(
   user: Database["public"]["Tables"]["users_test"]["Row"]
 ) {
-  if (!user.active_prompt) throw new Error("No active prompt for user");
+  if (!user.active_prompt)
+    throw new TypeError(
+      "No active prompt found to complete. Check your initialized user data."
+    );
   await insertCompletedPrompt({
     promptId: user.active_prompt,
     userId: user.id,
@@ -23,7 +26,6 @@ async function completePrompt(
   const newPrompt = await getUniquePrompt(
     `(${completedPrompts.map((prompt) => prompt.prompt_id).join(",")})`
   );
-
   if (!newPrompt) {
     await updateUser({
       id: user.id,
@@ -51,10 +53,20 @@ export async function completeLastPrompt() {
   return updatedUser;
 }
 
-export async function completeFirstPrompt() {
+export async function completeNullPrompt() {
   const user = await initializeData({
     id: "e3410205-b163-4fca-b624-c616a26990e9",
     active_prompt: null,
+    progress: "in_progress",
+  });
+  const updatedUser = await completePrompt(user);
+  return updatedUser;
+}
+
+export async function completeOnePrompt() {
+  const user = await initializeData({
+    id: "e3410205-b163-4fca-b624-c616a26990e9",
+    active_prompt: 1,
     progress: "in_progress",
   });
   const updatedUser = await completePrompt(user);

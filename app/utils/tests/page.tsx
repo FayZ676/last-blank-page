@@ -1,12 +1,20 @@
 "use client";
 
 import React from "react";
-import { initializeActivePromptForNewUser } from "./initializeActivePrompt";
-import { completeFirstPrompt, completeLastPrompt } from "./completePrompts";
+import {
+  initializePromptForExistingUser,
+  initializePromptForNewUser,
+} from "./initializePrompt";
+import { completeNullPrompt, completeLastPrompt } from "./completePrompt";
 
 export default function TestPage() {
-  async function handleInitializeActivePromptForNewUser() {
-    const newActivePrompt = await initializeActivePromptForNewUser();
+  async function handleInitializePromptForNewUser() {
+    const newActivePrompt = await initializePromptForNewUser();
+    console.log(`NAP: ${JSON.stringify(newActivePrompt)}`);
+  }
+
+  async function handleInitializePromptForExistingUser() {
+    const newActivePrompt = await initializePromptForExistingUser();
     console.log(`NAP: ${JSON.stringify(newActivePrompt)}`);
   }
 
@@ -15,18 +23,24 @@ export default function TestPage() {
     console.log(`UUD: ${JSON.stringify(updatedUserData)}`);
   }
 
-  async function handlecompleteFirstPrompt() {
-    const updatedUserData = await completeFirstPrompt();
+  async function handlecompleteNullPrompt() {
+    const updatedUserData = await completeNullPrompt();
     console.log(`UUD: ${JSON.stringify(updatedUserData)}`);
   }
 
   return (
     <div className="flex flex-col gap-2">
       <button
-        onClick={handleInitializeActivePromptForNewUser}
+        onClick={handleInitializePromptForNewUser}
         className="border rounded-md p-2 hover:bg-stone-800"
       >
-        Initialize Active Prompt for New User
+        Initialize active prompt for new user
+      </button>
+      <button
+        onClick={handleInitializePromptForExistingUser}
+        className="border rounded-md p-2 hover:bg-stone-800"
+      >
+        Initialize active prompt for existing user
       </button>
       <button
         onClick={handlecompleteLastPrompt}
@@ -35,7 +49,7 @@ export default function TestPage() {
         Complete last prompt
       </button>
       <button
-        onClick={handlecompleteLastPrompt}
+        onClick={handlecompleteNullPrompt}
         className="border rounded-md p-2 hover:bg-stone-800"
       >
         Complete first prompt

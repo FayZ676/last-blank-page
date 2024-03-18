@@ -50,3 +50,13 @@ export async function completeLastPrompt() {
   const updatedUser = await completePrompt(user);
   return updatedUser;
 }
+
+export async function completeFirstPrompt() {
+  const user = await initializeData({
+    id: "e3410205-b163-4fca-b624-c616a26990e9",
+    active_prompt: null,
+    progress: "in_progress",
+  });
+  const updatedUser = await completePrompt(user);
+  return updatedUser;
+}

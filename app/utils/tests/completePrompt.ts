@@ -44,11 +44,15 @@ async function completePrompt(
 }
 
 export async function completeLastPrompt() {
-  const user = await initializeData({
-    id: "e3410205-b163-4fca-b624-c616a26990e9",
-    active_prompt: 1,
-    progress: "in_progress",
-  });
+  const user = await initializeData(
+    {
+      id: "e3410205-b163-4fca-b624-c616a26990e9",
+      active_prompt: 1,
+      progress: "in_progress",
+    },
+    undefined,
+    [{ id: 1, scene: "First scene", task: "First task" }]
+  );
   const updatedUser = await completePrompt(user);
   return updatedUser;
 }
@@ -64,11 +68,18 @@ export async function completeNullPrompt() {
 }
 
 export async function completeOnePrompt() {
-  const user = await initializeData({
-    id: "e3410205-b163-4fca-b624-c616a26990e9",
-    active_prompt: 1,
-    progress: "in_progress",
-  });
+  const user = await initializeData(
+    {
+      id: "e3410205-b163-4fca-b624-c616a26990e9",
+      active_prompt: 1,
+      progress: "in_progress",
+    },
+    undefined,
+    [
+      { id: 1, scene: "First scene", task: "First task" },
+      { id: 2, scene: "Second scene", task: "Second task" },
+    ]
+  );
   const updatedUser = await completePrompt(user);
   return updatedUser;
 }

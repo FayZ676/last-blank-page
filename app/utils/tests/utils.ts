@@ -48,11 +48,8 @@ export async function updateActivePrompt(
   if (error) throw new Error(`${JSON.stringify(error)}`);
 }
 
-export async function deleteUser() {
-  const { error } = await supabase
-    .from("users_test")
-    .delete()
-    .eq("id", "e3410205-b163-4fca-b624-c616a26990e9");
+export async function deleteUser(userId: string) {
+  const { error } = await supabase.from("users_test").delete().eq("id", userId);
   if (error) throw new Error(`${JSON.stringify(error)}`);
 }
 
@@ -64,6 +61,14 @@ async function insertPrompt(
     .from("prompts_test")
     .insert(prompt)
     .select();
+  if (error) throw new Error(`${JSON.stringify(error)}`);
+}
+
+export async function deletePrompts(prompts: number[]) {
+  const { error } = await supabase
+    .from("prompts_test")
+    .delete()
+    .in("id", prompts);
   if (error) throw new Error(`${JSON.stringify(error)}`);
 }
 
@@ -98,6 +103,12 @@ export async function getUniquePrompt(completedPrompts: string) {
   return data[0];
 }
 
+export async function getAllPrompts() {
+  const { data, error } = await supabase.from("prompts_test").select("*");
+  if (error) throw new Error(`${JSON.stringify(error)}`);
+  return data;
+}
+
 // COMPLETED PROMPTS TABLE
 export async function insertCompletedPrompt({
   promptId,
@@ -121,11 +132,11 @@ export async function getCompletedPrompts(userId: string) {
   return data;
 }
 
-export async function deleteCompletedPrompts() {
+export async function deleteCompletedPrompts(userId: string) {
   const { error } = await supabase
     .from("completed_prompts_test")
     .delete()
-    .eq("user_id", "e3410205-b163-4fca-b624-c616a26990e9");
+    .eq("user_id", userId);
   if (error) throw new Error(`${JSON.stringify(error)}`);
 }
 

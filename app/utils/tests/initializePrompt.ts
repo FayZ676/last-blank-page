@@ -26,21 +26,29 @@ async function initializePrompt(
 }
 
 export async function initializePromptForNewUser() {
-  const user = await initializeData({
-    id: "e3410205-b163-4fca-b624-c616a26990e9",
-    progress: "in_progress",
-    active_prompt: null,
-  });
+  const user = await initializeData(
+    {
+      id: "e3410205-b163-4fca-b624-c616a26990e9",
+      progress: "in_progress",
+      active_prompt: null,
+    },
+    undefined,
+    [{ id: 1, scene: "First scene", task: "First task" }]
+  );
   const updatedUser = await initializePrompt(user);
   return updatedUser;
 }
 
 export async function initializePromptForExistingUser() {
-  const user = await initializeData({
-    id: "e3410205-b163-4fca-b624-c616a26990e9",
-    progress: "in_progress",
-    active_prompt: 1,
-  });
+  const user = await initializeData(
+    {
+      id: "e3410205-b163-4fca-b624-c616a26990e9",
+      progress: "in_progress",
+      active_prompt: 1,
+    },
+    undefined,
+    [{ id: 1, scene: "First scene", task: "First task" }]
+  );
   const updatedUser = await initializePrompt(user);
   return updatedUser;
 }

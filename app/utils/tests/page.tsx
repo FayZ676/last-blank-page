@@ -52,7 +52,7 @@ export default function TestPage() {
         onClick={handlecompleteNullPrompt}
         className="border rounded-md p-2 hover:bg-stone-800"
       >
-        Complete first prompt
+        Complete null prompt
       </button>
     </div>
   );

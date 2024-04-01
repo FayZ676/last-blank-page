@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { initializeExistingUser, initializeNewUser } from "./initializePrompt";
 import { completeNullPrompt, completeLastPrompt } from "./completePrompt";
-import Button from "@/app/components/Button";
+import TestCard from "./components/TestCard";
 
 export default function TestPage() {
   const [loading, setLoading] = useState(false);
@@ -22,61 +22,32 @@ export default function TestPage() {
       <div className="grid gap-4">
         <h1>Tests</h1>
         <div className="grid gap-4">
-          <div className="grid">
-            <div className="flex justify-between">
-              <h2>Initialize New User</h2>
-              <Button
-                text="Run"
-                onClickHandler={() => handleTest(initializeNewUser)}
-              />
-            </div>
-            <ul>
-              <li>
-                <b>progress:</b> in_progress
-              </li>
-              <li>
-                <b>active_prompt:</b> null
-              </li>
-            </ul>
-          </div>
-          <div>
-            <div className="flex justify-between">
-              <h2>Initialize Existing User</h2>
-              <Button
-                text="Run"
-                onClickHandler={() => handleTest(initializeExistingUser)}
-              />
-            </div>
-            <p>test description</p>
-          </div>
-          <div>
-            <div className="flex justify-between">
-              <h2>Complete Last Prompt</h2>
-              <Button
-                text="Run"
-                onClickHandler={() => handleTest(completeLastPrompt)}
-              />
-            </div>
-            <p>test description</p>
-          </div>
-          <div>
-            <div className="flex justify-between">
-              <h2>Complete Empty Prompt</h2>
-              <Button
-                text="Run"
-                onClickHandler={() => handleTest(completeNullPrompt)}
-              />
-            </div>
-            <p>test description</p>
-          </div>
+          <TestCard
+            onClickHandler={() => handleTest(initializeNewUser)}
+            title="Initialize New User"
+            description="Some test description"
+          />
+          <TestCard
+            onClickHandler={() => handleTest(initializeExistingUser)}
+            title="Initialize Existing User"
+            description="Some test description"
+          />
+          <TestCard
+            onClickHandler={() => handleTest(completeLastPrompt)}
+            title="Complete the Last Prompt"
+            description="Some test description"
+          />
+          <TestCard
+            onClickHandler={() => handleTest(completeNullPrompt)}
+            title="Complete an Empty Prompt"
+            description="Some test description"
+          />
         </div>
       </div>
       <div className="grid gap-4">
         <div className="flex space-x-2">
           <h1>Result</h1>
-          {loading && (
-            <span className="loading loading-spinner loading-sm"></span>
-          )}
+          {loading && <p>loading ...</p>}
         </div>
         <p>{testResult && testResult}</p>
       </div>

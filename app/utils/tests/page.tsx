@@ -1,59 +1,85 @@
 "use client";
 
-import React from "react";
-import {
-  initializePromptForExistingUser,
-  initializePromptForNewUser,
-} from "./initializePrompt";
+import React, { useState } from "react";
+import { initializeExistingUser, initializeNewUser } from "./initializePrompt";
 import { completeNullPrompt, completeLastPrompt } from "./completePrompt";
+import Button from "@/app/components/Button";
 
 export default function TestPage() {
-  async function handleInitializePromptForNewUser() {
-    const newActivePrompt = await initializePromptForNewUser();
-    console.log(`NAP: ${JSON.stringify(newActivePrompt)}`);
-  }
+  const [loading, setLoading] = useState(false);
+  const [testResult, setTestResult] = useState<string | null>(null);
 
-  async function handleInitializePromptForExistingUser() {
-    const newActivePrompt = await initializePromptForExistingUser();
-    console.log(`NAP: ${JSON.stringify(newActivePrompt)}`);
-  }
-
-  async function handlecompleteLastPrompt() {
-    const updatedUserData = await completeLastPrompt();
-    console.log(`UUD: ${JSON.stringify(updatedUserData)}`);
-  }
-
-  async function handlecompleteNullPrompt() {
-    const updatedUserData = await completeNullPrompt();
-    console.log(`UUD: ${JSON.stringify(updatedUserData)}`);
+  async function handleTest(testFunction: () => Promise<any>) {
+    setLoading(true);
+    setTestResult("");
+    const result = await testFunction();
+    setTestResult(JSON.stringify(result));
+    setLoading(false);
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <button
-        onClick={handleInitializePromptForNewUser}
-        className="border rounded-md p-2 hover:bg-stone-800"
-      >
-        Initialize active prompt for new user
-      </button>
-      <button
-        onClick={handleInitializePromptForExistingUser}
-        className="border rounded-md p-2 hover:bg-stone-800"
-      >
-        Initialize active prompt for existing user
-      </button>
-      <button
-        onClick={handlecompleteLastPrompt}
-        className="border rounded-md p-2 hover:bg-stone-800"
-      >
-        Complete last prompt
-      </button>
-      <button
-        onClick={handlecompleteNullPrompt}
-        className="border rounded-md p-2 hover:bg-stone-800"
-      >
-        Complete null prompt
-      </button>
+    <div className="grid grid-cols-2 gap-4">
+      <div className="grid gap-4">
+        <h1>Tests</h1>
+        <div className="grid gap-4">
+          <div className="grid">
+            <div className="flex justify-between">
+              <h2>Initialize New User</h2>
+              <Button
+                text="Run"
+                onClickHandler={() => handleTest(initializeNewUser)}
+              />
+            </div>
+            <ul>
+              <li>
+                <b>progress:</b> in_progress
+              </li>
+              <li>
+                <b>active_prompt:</b> null
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div className="flex justify-between">
+              <h2>Initialize Existing User</h2>
+              <Button
+                text="Run"
+                onClickHandler={() => handleTest(initializeExistingUser)}
+              />
+            </div>
+            <p>test description</p>
+          </div>
+          <div>
+            <div className="flex justify-between">
+              <h2>Complete Last Prompt</h2>
+              <Button
+                text="Run"
+                onClickHandler={() => handleTest(completeLastPrompt)}
+              />
+            </div>
+            <p>test description</p>
+          </div>
+          <div>
+            <div className="flex justify-between">
+              <h2>Complete Empty Prompt</h2>
+              <Button
+                text="Run"
+                onClickHandler={() => handleTest(completeNullPrompt)}
+              />
+            </div>
+            <p>test description</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid gap-4">
+        <div className="flex space-x-2">
+          <h1>Result</h1>
+          {loading && (
+            <span className="loading loading-spinner loading-sm"></span>
+          )}
+        </div>
+        <p>{testResult && testResult}</p>
+      </div>
     </div>
   );
 }

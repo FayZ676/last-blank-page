@@ -25,7 +25,7 @@ async function initializePrompt(
   return activePromptData;
 }
 
-export async function initializePromptForNewUser() {
+export async function initializeNewUser() {
   const user = await initializeData(
     {
       id: "e3410205-b163-4fca-b624-c616a26990e9",
@@ -39,7 +39,7 @@ export async function initializePromptForNewUser() {
   return updatedUser;
 }
 
-export async function initializePromptForExistingUser() {
+export async function initializeExistingUser() {
   const user = await initializeData(
     {
       id: "e3410205-b163-4fca-b624-c616a26990e9",
